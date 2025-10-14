@@ -1,0 +1,65 @@
+:root {
+    --primary-color:   #000;
+    --light-primary:   #222;
+    --light-secondary: #CCC;
+    --secondary-color: #FFF;
+
+    --accent-color-one:   #358;
+    --accent-color-two:   #FB4;
+    --accent-color-three: #797;
+
+    --primary-font: Monospace;
+}
+
+/* Custom font faces from DaFont.com. Let's users choose their preferred font to use. All fonts used are public domain. */
+@font-face { font-family: Bristol;  src: url("../fonts/Bristol.otf");  }
+@font-face { font-family: Classica; src: url("../fonts/Classica.ttf"); }
+@font-face { font-family: Code128;  src: url("../fonts/Code128.ttf");  }
+@font-face { font-family: Edmunds;  src: url("../fonts/Edmunds.otf");  }
+@font-face { font-family: Foo;      src: url("../fonts/Foo.otf");      }
+@font-face { font-family: Orkahaug; src: url("../fonts/Orkahaug.otf"); }
+@font-face { font-family: Potra;    src: url("../fonts/Potra.ttf");    }
+@font-face { font-family: QRCode;   src: url("../fonts/QRCode.ttf");   }
+@font-face { font-family: Sono;     src: url("../fonts/Sono.ttf");     }
+@font-face { font-family: TenPixel; src: url("../fonts/TenPixel.ttf"); }
+@font-face { font-family: Wave;     src: url("../fonts/Wave.otf");     }
+@font-face { font-family: Wavetosh; src: url("../fonts/Wavetosh.ttf"); }
+@font-face { font-family: Zector;   src: url("../fonts/Zector.ttf");   }
+
+/* Styles */
+.triangle-pattern {
+    background-color: var(--primary-color);
+    background-image: linear-gradient(
+            -45deg,
+            var(--primary-color),
+            var(--primary-color) 50%,
+            var(--light-primary) 50%,
+            var(--light-primary)
+    );
+    background-size: 5px 5px;
+}
+
+.flat-backdrop {
+    background-color: var(--primary-color);
+}
+
+.gradient-backdrop {
+    background-image: linear-gradient(
+            to right,
+            var(--light-primary),
+            var(--primary-color)
+    );
+}
+
+/* Misc */
+.visibility-hidden {
+    display: none !important;
+}
+
+
+html, body {
+    background: var(--primary-color);
+    color:      var(--secondary-color);
+
+    font-family: var(--primary-font), monospace;
+}
