@@ -4,217 +4,24 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<link rel="icon" href="../static/favicon.svg" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.svg" />
 
-		<link href="../static/css/base.css" rel="stylesheet" />
+		<link href="%sveltekit.assets%/css/base.css"      rel="stylesheet" />
+		<link href="%sveltekit.assets%/css/scrollbar.css" rel="stylesheet" />
 
-		<link href="../static/css/header.css"   rel="stylesheet" />
-		<link href="../static/css/sidebar.css"  rel="stylesheet" />
-		<link href="../static/css/dropdown.css" rel="stylesheet" />
-		<link href="../static/css/content.css"  rel="stylesheet" />
+		<link href=".%sveltekit.assets%/css/header.css"  rel="stylesheet" />
+		<link href="%sveltekit.assets%/css/dropdown.css" rel="stylesheet" />
 
-		<link href="../static/css/scrollbar.css" rel="stylesheet" />
+		<link href="%sveltekit.assets%/css/sidebar.css"  rel="stylesheet" />
+		<link href="%sveltekit.assets%/css/content.css"  rel="stylesheet" />
 
 		<title>Forum2</title>
+		%sveltekit.head%
 	</head>
 	<body>
-		<header id="site-header" class="triangle-pattern">
-			<div id="header-info">
-				<h2>/m/ Main</h2>
-				<h4>A collection of popular posts from each board.</h4>
-			</div>
-
-			<div id="header-dropdowns">
-				<div id="header-themes" class="dropdown">
-					<button class="dropdown-btn">Themes</button>
-					<div class="dropdown-content">
-						<a onclick="changeTheme('classic')"     >Classic     </a>
-						<a onclick="changeTheme('light')"       >Light       </a>
-						<a onclick="changeTheme('low-contrast')">Low Contrast</a>
-						<a onclick="changeTheme('slate')"       >Slate       </a>
-						<a onclick="changeTheme('garden')"      >Garden      </a>
-					</div>
-				</div>
-
-				<div id="header-fonts" class="dropdown">
-					<button class="dropdown-btn">Fonts</button>
-					<div class="dropdown-content">
-						<a onclick="changeFont('Monospace')">Monospace</a>
-						<a onclick="changeFont('Bristol')"  >Bristol  </a>
-						<a onclick="changeFont('Classica')" >Classica </a>
-						<a onclick="changeFont('Code128')"  >Code128  </a>
-						<a onclick="changeFont('Edmunds')"  >Edmunds  </a>
-						<a onclick="changeFont('Foo')"      >Foo      </a>
-						<a onclick="changeFont('Orkahaug')" >Orkahaug </a>
-						<a onclick="changeFont('Potra')"    >Potra    </a>
-						<a onclick="changeFont('QRCode')"   >QRCode   </a>
-						<a onclick="changeFont('Sono')"     >Sono     </a>
-						<a onclick="changeFont('TenPixel')" >TenPixel </a>
-						<a onclick="changeFont('Wave')"     >Wave     </a>
-						<a onclick="changeFont('Wavetosh')" >Wavetosh </a>
-						<a onclick="changeFont('Zector')"   >Zector   </a>
-					</div>
-				</div>
-
-				<div id="header-styles" class="dropdown">
-					<button class="dropdown-btn">Styles</button>
-					<div class="dropdown-content">
-						<a onclick="changeStyle('classic')" >Classic </a>
-						<a onclick="changeStyle('flat')"    >Flat    </a>
-						<a onclick="changeStyle('gradient')">Gradient</a>
-					</div>
-				</div>
-			</div>
-		</header>
-
-		<aside id="sidebar">
-			<div id="sidebar-header">
-				 <a href="/" id="sidebar-logo-link"><img src="../static/favicon.svg" alt="Forum2 Logo" /></a>
-
-				<div id="sidebar-label">
-					<h2>Forum2</h2>
-					<h4>Community boards</h4>
-				</div>
-			</div>
-
-			<div id="sidebar-search">
-				<label><input type="text" placeholder="Search..." /></label>
-				<button>🔍</button>
-			</div>
-
-			<div id="sidebar-sort">
-				<label for="sort-select">Sort by:</label>
-				<select id="sort-select">
-					<option value="recent">Most Recent</option>
-					<option value="popular">Most Popular</option>
-					<option value="comments">Most Comments</option>
-				</select>
-			</div>
-
-			<div id="sidebar-timespan">
-				<label for="startDate"></label>
-				<input id="startDate" name="startDate" type="date" accept="mm/dd/yyyy">
-
-				<label for="endDate"></label>
-				<input id="endDate" name="endDate" type="date" accept="mm/dd/yyyy">
-			</div>
-
-			<nav id="sidebar-navigation">
-				<h2>Boards</h2>
-				<ul>
-					<li><a href="#">Main</a></li>
-					<li><a href="#">Anime</a></li>
-					<li><a href="#">Cooking</a></li>
-					<li><a href="#">Fitness</a></li>
-					<li><a href="#">Technology</a></li>
-					<li><a href="#">Video Games</a></li>
-				</ul>
-
-				<h2>Account</h2>
-				<ul>
-					<li><a href="#">Create Thread</a></li>
-					<li><a href="#">Profile</a></li>
-					<li><a href="#">Settings</a></li>
-					<li><a href="#">Register</a></li>
-					<li><a href="#">Login</a></li>
-				</ul>
-			</nav>
-
-			<div id="site-controls">
-				<button id="grid-toggle"   >⧉</button>
-				<button id="sidebar-toggle">☰</button>
-			</div>
-		</aside>
-
-		<main id="main-content">
-			<article>
-				<div>
-					<h2>Thread title</h2>
-					<p>by <span class="font-medium">user123</span> · 2 hours ago</p>
-					<p>Quick thread excerpt for preview purposes...</p>
-				</div>
-				<div>
-					<div>
-						<span>tag</span>
-					</div>
-					<a href="#">Open</a>
-				</div>
-			</article>
-
-			<article>
-				<div>
-					<h2>Thread title</h2>
-					<p>by <span class="font-medium">user123</span> · 2 hours ago</p>
-					<p>Quick thread excerpt for preview purposes...</p>
-				</div>
-				<div>
-					<div>
-						<span>tag</span>
-					</div>
-					<a href="#">Open</a>
-				</div>
-			</article>
-
-			<article>
-				<div>
-					<h2>Thread title</h2>
-					<p>by <span class="font-medium">user123</span> · 2 hours ago</p>
-					<p>Quick thread excerpt for preview purposes...</p>
-				</div>
-				<div>
-					<div>
-						<span>tag</span>
-					</div>
-					<a href="#">Open</a>
-				</div>
-			</article>
-
-			<article>
-				<div>
-					<h2>Thread title</h2>
-					<p>by <span class="font-medium">user123</span> · 2 hours ago</p>
-					<p>Quick thread excerpt for preview purposes...</p>
-				</div>
-				<div>
-					<div>
-						<span>tag</span>
-					</div>
-					<a href="#">Open</a>
-				</div>
-			</article>
-
-			<article>
-				<div>
-					<h2>Thread title</h2>
-					<p>by <span class="font-medium">user123</span> · 2 hours ago</p>
-					<p>Quick thread excerpt for preview purposes...</p>
-				</div>
-				<div>
-					<div>
-						<span>tag</span>
-					</div>
-					<a href="#">Open</a>
-				</div>
-			</article>
-
-			<article>
-				<div>
-					<h2>Thread title</h2>
-					<p>by <span class="font-medium">user123</span> · 2 hours ago</p>
-					<p>Quick thread excerpt for preview purposes...</p>
-				</div>
-				<div>
-					<div>
-						<span>tag</span>
-					</div>
-					<a href="#">Open</a>
-				</div>
-			</article>
-		</main>
+		%sveltekit.body%
 	</body>
 	<footer>
-		<script src="../static/js/hue.config.js"></script>
-		<script src="../static/js/sidebar.js"   ></script>
-		<script src="../static/js/ui.config.js" ></script>
+		<script src="%sveltekit.assets%/js/sidebar.js"></script>
 	</footer>
 </html>

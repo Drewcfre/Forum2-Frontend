@@ -58,8 +58,5 @@
 	},
 	"keywords": [
 		"svelte"
-	],
-	"dependencies": {
-		"color-convert": "^3.1.2"
-	}
+	]
 }

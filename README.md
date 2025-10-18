@@ -1,7 +1,7 @@
-# Forum2 Frontend (Alice)
+# Forum2 Frontend
 
-The Forum2 Frontend (Alice) is a sleek, modern, and user-friendly interface designed for the Forum2 platform. Built with
-SvelteKit, it offers a seamless experience for users to interact with the Forum2 backend.
+The Forum2 Frontend (Alice) is a sleek, user-friendly interface designed for the Forum2 social media platform.
+Built with SvelteKit, it offers a seamless experience for users to interact with the Forum2 backend.
 
 ## Key Features
 
@@ -10,5 +10,5 @@ SvelteKit, it offers a seamless experience for users to interact with the Forum2
 - **User Authentication**: Secure login and registration features.
 - **Dynamic Content**: Real-time updates and dynamic content rendering.
 - **Easy Navigation**: Intuitive navigation structure for a better user experience.
-- **Customizable Themes**: Options for light and dark modes to suit user preferences.
+- **Customizable Themes**: Provides a variety of themes, fonts, and designs to choose from.
 - **Integration with Forum2 Backend**: Seamless integration with the Forum2 backend for smooth data handling.

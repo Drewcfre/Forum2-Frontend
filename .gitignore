@@ -1,5 +1,10 @@
+# IntelliJ
+/.idea
+
 test-results
 node_modules
+
+/e2e
 
 # Output
 .output
@@ -24,5 +29,4 @@ Thumbs.db
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-# Misc
-.idea
+.gitignore
