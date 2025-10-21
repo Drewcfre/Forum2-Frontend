@@ -30,3 +30,6 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 .gitignore
+
+# Misc
+eslint.config.js

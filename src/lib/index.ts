@@ -1,45 +1,92 @@
 import {type Writable, writable} from "svelte/store";
 import type {ChangeEventHandler, MouseEventHandler} from "svelte/elements";
 
-const URL = "http://localhost:8080"; // TODO: Change this to the deployed backend URL.
+// TODO: Change this to the deployed backend URL.
+export const URL = "http://127.0.0.1:5001/forum2-1134f/us-central1/app";
 
-export const currentBoard: string = "Main";
-export const currentDesc: string = "A collection of popular posts from each board.";
+// region Board Details (Click to Expand)
+export let currentBoard: string = "Main";
+export let currentDesc: string = "A collection of popular posts from each board.";
 
-export const loggedIn: boolean = false;
+export let threads: any;
+export let queriedThreads: any;
 
-export const threads: Writable<unknown> = writable();
+export const startDate: Writable<Date> = writable();
+export const endDate: Writable<Date> = writable();
 
-export async function getThreads() {
+export async function getThreads(): Promise<void> {
     await fetch(`${URL}/anon/catalog/${currentBoard}`, {method: 'GET'})
         .then((response) => response.json())
-        .then((data) => threads.set(data))
+        .then((data) => threads = data.body)
         .catch((error) => console.error("Error fetching threads:", error));
+
+    queriedThreads = threads
 }
 
-// TODO: Implement search functionality. Sidebar.svelte should already have the necessary UI elements.
-export const searchThreads = (query: HTMLElement | null): MouseEventHandler<HTMLButtonElement> => {
+export const searchThreads = (query: string | undefined): MouseEventHandler<HTMLButtonElement> => {
     return (): void => {
-        const searchQuery: string = query?.textContent ?? "";
-        console.log("NOT IMPLEMENTED: Search for threads with query:", searchQuery);
+        if(!query) queriedThreads = threads;
+        else queriedThreads = threads.filter((item: any) => item.toString().includes(query));
     };
 }
 
-// TODO: Implement sort functionality. Sidebar.svelte should already have the necessary UI elements.
-export function sortThreads(by: HTMLElement | null): ChangeEventHandler<HTMLSelectElement> {
+export function sortThreads(by: string): ChangeEventHandler<HTMLSelectElement> {
     return (): void => {
-        const sortBy: string = by?.textContent ?? "";
-        console.log("NOT IMPLEMENTED: Sort threads by:", sortBy);
+        switch (by) {
+            case 'Most Recent':
+                queriedThreads = queriedThreads.sort((a: any, b: any): any => (a.creationDate > b.creationDate) ? 1 : -1);
+                break;
+            case 'Most Popular':
+                queriedThreads = queriedThreads.sort((a: any, b: any): any => (a.rating > b.rating) ? 1 : -1);
+                break;
+            case 'Most Comments':
+                queriedThreads = queriedThreads.sort((a: any, b: any): any => (a.replies.size > b.replies.size) ? 1 : -1);
+                break;
+        }
     }
 }
 
-// TODO: Implement method for date range filtering. Make sure to update Sidebar.svelte accordingly.
-
-// TODO: Implement board change functionality. Sidebar.svelte should already have the necessary UI elements.
-export function changeBoard(Board: string): MouseEventHandler<HTMLAnchorElement> {
+export function restrictThreadDate(): ChangeEventHandler<HTMLInputElement> {
     return (): void => {
-        console.log("NOT IMPLEMENTED: Change board to:", Board);
+        queriedThreads = threads.filter((item: any): any => (item.creationDate >= startDate && item.creationDate <= endDate));
     }
+}
+
+export function changeBoard(board: string): MouseEventHandler<HTMLAnchorElement> {
+    return async (): Promise<void> => {
+        currentBoard = board;
+        await getThreads();
+    }
+}
+// endregion
+
+// region User Details (Click to Expand)
+export const loggedIn: boolean = false;
+export const isAdmin: boolean = false;
+
+export const username: string = "";
+
+
+
+export const captcha: Writable<any> = writable();
+
+export async function generateCaptcha(): Promise<string> {
+    return await fetch(`${URL}/tools/captcha`, {method: 'GET'})
+        .then((response): ReadableStream => <ReadableStream>response.body)
+        .then(async (body): Promise<string> => {
+            const reader = body.getReader();
+            const decoder = new TextDecoder('utf-8');
+
+            let svgText: string = "";
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                svgText += decoder.decode(value, { stream: true });
+            }
+            svgText += decoder.decode();
+
+            return svgText;
+        });
 }
 
 export function checkLogin(): boolean {

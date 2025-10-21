@@ -1,11 +1,42 @@
 <script lang="ts">
-    import {changeBoard, checkLogin, searchThreads, sortThreads} from "$lib/index.js";
+    import {
+        changeBoard,
+        checkLogin,
+        endDate,
+        isAdmin,
+        restrictThreadDate,
+        searchThreads,
+        sortThreads,
+        startDate
+    } from "$lib/index.js";
+    import type {ChangeEventHandler} from "svelte/elements";
+
+    function getSelectValue() {
+        const select: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sort-select");
+        if(select) return select.value;
+
+        return "";
+    }
+
+    function updateDates(isStart: boolean): ChangeEventHandler<HTMLInputElement> {
+        return (): void => {
+            if (isStart) {
+                const date: HTMLInputElement = <HTMLInputElement>document.getElementById('startDate');
+                startDate.set(<Date>date.valueAsDate);
+            } else {
+                const date: HTMLInputElement = <HTMLInputElement>document.getElementById('endDate');
+                endDate.set(<Date>date.valueAsDate);
+            }
+
+            restrictThreadDate();
+        }
+    }
 </script>
 
 <aside id="sidebar">
     <div id="sidebar-header">
         <a href="/" id="sidebar-logo-link">
-            <img src="../../static/favicon.svg" alt="Forum2 Logo" />
+            <img src="/images/favicon.svg" alt="Forum2 Logo" />
         </a>
 
         <div id="sidebar-label">
@@ -16,12 +47,12 @@
 
     <form id="sidebar-search" >
         <label><input id="query" type="text" placeholder="Search..." /></label>
-        <button onclick={searchThreads(document.getElementById("query"))}>🔍</button>
+        <button onclick={searchThreads(document.getElementById("query")?.innerText)}>🔍</button>
     </form>
 
     <div id="sidebar-sort">
         <label for="sort-select">Sort by:</label>
-        <select id="sort-select" onchange={sortThreads(document.getElementById("sort-select"))}>
+        <select id="sort-select" onchange={sortThreads(getSelectValue())}>
             <option value="recent">Most Recent</option>
             <option value="popular">Most Popular</option>
             <option value="comments">Most Comments</option>
@@ -30,14 +61,14 @@
 
     <div id="sidebar-timespan">
         <label for="startDate"></label>
-        <input id="startDate" name="startDate" type="date" accept="mm/dd/yyyy">
+        <input id="startDate" name="startDate" type="date" accept="mm/dd/yyyy" onchange={updateDates(true)}>
 
         <label for="endDate"></label>
-        <input id="endDate" name="endDate" type="date" accept="mm/dd/yyyy">
+        <input id="endDate" name="endDate" type="date" accept="mm/dd/yyyy" onchange={updateDates(false)}>
     </div>
 
     <nav id="sidebar-navigation">
-        <h2>Boards</h2>
+        <h2 id="nav-boards">Boards</h2>
         <ul>
             <li><a id="ba1" role="button" tabindex="0" onmousedown={changeBoard("Main")}>      Main       </a></li>
             <li><a id="ba2" role="button" tabindex="0" onmousedown={changeBoard("Anime")}>     Anime      </a></li>
@@ -45,24 +76,26 @@
             <li><a id="ba4" role="button" tabindex="0" onmousedown={changeBoard("Fitness")}>   Fitness    </a></li>
             <li><a id="ba5" role="button" tabindex="0" onmousedown={changeBoard("Technology")}>Technology </a></li>
             <li><a id="ba6" role="button" tabindex="0" onmousedown={changeBoard("Vidya")}>     Video Games</a></li>
+            {#if isAdmin}
+                <li><a id="ba7" role="button" tabindex="0" onmousedown={changeBoard("Admin")}>Admin</a></li>
+            {/if}
         </ul>
 
-        <h2>Account</h2>
+        <h2 id="nav-account">Account</h2>
         <ul>
-            <li><a href="/create">Create Thread</a></li>
+            <li><a id="bb1" href="/create">Create Thread</a></li>
 
-            <li><a href="/account">
-                {#if checkLogin()}
-                    Profile
-                {:else}
-                    Login
-                {/if}
-            </a></li>
+            {#if checkLogin()}
+                <li><a id="bb2" href="/account">Profile</a></li>
+            {:else}
+                <li><a id="bb3" href="/account">Login</a></li>
+                <li><a id="bb4" href="/signup">Sign Up</a></li>
+            {/if}
         </ul>
     </nav>
 
     <div id="site-controls">
-        <button id="grid-toggle"   >⧉</button>
+        <button id="grid-toggle">   ⧉</button>
         <button id="sidebar-toggle">☰</button>
     </div>
 </aside>

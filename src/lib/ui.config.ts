@@ -34,18 +34,24 @@ export const changeFont = (font: string): MouseEventHandler<HTMLAnchorElement> =
 
 export const changeStyle = (style: string): MouseEventHandler<HTMLAnchorElement> => {
     return (): void => {
-        const header = document.getElementById('site-header');
+        const elements = [
+            document.getElementById('site-header'),
+            document.getElementById('post-create'),
+            document.getElementById('login-form'),
+        ]
 
-        header?.classList.remove('flat-backdrop', 'gradient-backdrop', 'triangle-pattern')
-        header?.classList.add(((): string => {
-            switch (style) {
-                case 'flat':
-                    return 'flat-backdrop'
-                case 'gradient':
-                    return 'gradient-backdrop'
-                default:
-                    return 'triangle-pattern'
-            }
-        })())
+        elements.forEach((element) => {
+            element?.classList.remove('flat-backdrop', 'gradient-backdrop', 'triangle-pattern')
+            element?.classList.add(((): string => {
+                switch (style) {
+                    case 'flat':
+                        return 'flat-backdrop'
+                    case 'gradient':
+                        return 'gradient-backdrop'
+                    default:
+                        return 'triangle-pattern'
+                }
+            })())
+        })
     }
 }

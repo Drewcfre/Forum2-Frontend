@@ -4,7 +4,7 @@
     import {changeFont, changeStyle, changeTheme} from "$lib/ui.config.js";
 </script>
 
-<header id="site-header" class="gradient-backdrop">
+<header id="site-header" class="triangle-pattern">
     <div id="header-info">
         <h2>{currentBoard}</h2>
         <h4>{currentDesc}</h4>

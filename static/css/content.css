@@ -17,4 +17,89 @@ main {
     margin: 100px 20px 20px 300px;
 
     transition: all 0.3s ease;
+
+    min-width: 700px;
+}
+
+.create-post-centered {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-post-centered form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 300px;
+
+    padding: 10px;
+
+    border: thin solid var(--light-primary);
+}
+
+.create-post-centered form div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    width: 100%;
+    height: 40px;
+}
+
+.create-post-centered input[type="text"],
+.create-post-centered input[type="file"],
+.create-post-centered textarea,
+.create-post-centered select,
+.create-post-centered button {
+    padding: 0.5rem;
+    font-size: 1rem;
+    background: var(--primary-color);
+    color: inherit;
+
+    border: thin solid var(--light-primary);
+
+    outline: none;
+}
+
+.create-post-centered input[type="file"] {
+    width: calc(100% - 17px);
+}
+
+.create-post-centered input[type="text"] {
+    width: 220.67px;
+}
+
+.create-post-centered select {
+    background: var(--primary-color);
+    color:      var(--secondary-color);
+
+    width: 238px;
+}
+
+.create-post-centered #post-content {
+    height: 140px;
+}
+
+.create-post-centered #post-content textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+/* Buttons match form style */
+.create-post-centered button {
+    cursor: pointer;
+    font-weight: bold;
+    border: 1px solid #000;
+    background: var(--accent-color-one);
+}
+
+/* Optional hover effect for accessibility */
+.create-post-centered button:hover {
+    background: var(--accent-color-three);
+}
+
+.create-post-centered button:active {
+    background: var(--accent-color-two);
 }
