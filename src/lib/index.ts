@@ -3,6 +3,8 @@ import type {ChangeEventHandler, MouseEventHandler} from "svelte/elements";
 
 // TODO: Change this to the deployed backend URL.
 export const URL = "http://127.0.0.1:5001/forum2-1134f/us-central1/app";
+export const selfURL = "http://localhost:4173";
+
 
 // region Board Details (Click to Expand)
 export let currentBoard: string = "Main";
@@ -13,6 +15,9 @@ export let queriedThreads: any;
 
 export const startDate: Writable<Date> = writable();
 export const endDate: Writable<Date> = writable();
+
+export let threadUUID: string;
+export let replyUUID: string;
 
 export async function getThreads(): Promise<void> {
     await fetch(`${URL}/anon/catalog/${currentBoard}`, {method: 'GET'})
@@ -89,7 +94,7 @@ export async function generateCaptcha(): Promise<string> {
         });
 }
 
-export function checkLogin(): boolean {
-    console.log("NOT IMPLEMENTED: Check login status.");
-    return true;
+export async function checkLogin(): Promise<boolean> {
+    return await fetch(`${URL}/user/check`, {method: 'GET'})
+        .then((response: any): any => response.json().body.loggedIn)
 }

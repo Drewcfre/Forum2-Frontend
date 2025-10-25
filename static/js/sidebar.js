@@ -49,4 +49,8 @@ document.getElementById('sidebar-toggle').addEventListener('click', () => {
 
 document.getElementById('grid-toggle').addEventListener('click', () => {
     document.getElementById('main-content').classList.toggle('content-grid')
+
+    if(document.getElementById('thread-info').style.display === 'flex') {
+        document.getElementById('thread-info').style.display = 'block';
+    } else document.getElementById('thread-info').style.display = 'flex';
 })

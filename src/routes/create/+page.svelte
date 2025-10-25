@@ -1,8 +1,31 @@
 <script lang="ts">
-    import {generateCaptcha, loggedIn} from "$lib/index.js";
+    import {generateCaptcha, loggedIn, URL} from "$lib/index.js";
 
-    function setSVG(svg: string): void {
-        console.log(svg);
+    let loading = false;
+
+    async function handleSubmit(event: any) {
+        event.preventDefault();
+        loading = true;
+
+        try {
+            const formData = new FormData(event.currentTarget);
+
+            const response = await fetch(`${URL}/create/${event.currentTarget.board.value}`, {
+                method: "POST",
+                body: formData,
+            });
+
+            const responseBody = await response.json();
+            if (!response.ok) alert(`${response.status}: ${responseBody.error || "Unknown error!"}`)
+            else alert("Thread created! It may take a few minutes to become visible on the board.");
+        }
+        catch (err: any) { alert(err?.message || String(err)); }
+        finally { loading = false; }
+    }
+
+    async function setSVG() {
+        const svg = await generateCaptcha();
+
         let element = document.getElementById('captcha-container');
         if(element != null) element.innerHTML = svg;
     }
@@ -10,7 +33,8 @@
 
 <main class="create-post-centered">
     <h1>Create a New Thread</h1>
-    <form id="post-create" class="triangle-pattern" enctype="multipart/form-data" method="POST" action="/anon/catalog">
+
+    <form id="post-create" class="triangle-pattern" enctype="multipart/form-data" on:submit={handleSubmit} aria-busy={loading}>
         <label for="image"><input name="image" type="file" accept="image/*"></label>
 
         <label>
@@ -35,9 +59,7 @@
             <div id="captcha-container"></div>
             <label><input type="text" name="captcha" placeholder="Enter CAPTCHA" required></label>
 
-            {#await generateCaptcha() then svg}
-                {#if svg}{setSVG(svg)}{/if}
-            {/await}
+            {#await setSVG()}{/await}
         {/if}
 
         <button type="submit">Create Thread</button>

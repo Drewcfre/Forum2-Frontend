@@ -1,13 +1,9 @@
 <script lang="ts">
+    // TODO: Ensure all sort methods are functional.
+
     import {
-        changeBoard,
-        checkLogin,
-        endDate,
-        isAdmin,
-        restrictThreadDate,
-        searchThreads,
-        sortThreads,
-        startDate
+        changeBoard, checkLogin, endDate, isAdmin,
+        restrictThreadDate, searchThreads, sortThreads, startDate
     } from "$lib/index.js";
     import type {ChangeEventHandler} from "svelte/elements";
 
@@ -70,14 +66,14 @@
     <nav id="sidebar-navigation">
         <h2 id="nav-boards">Boards</h2>
         <ul>
-            <li><a id="ba1" role="button" tabindex="0" onmousedown={changeBoard("Main")}>      Main       </a></li>
-            <li><a id="ba2" role="button" tabindex="0" onmousedown={changeBoard("Anime")}>     Anime      </a></li>
-            <li><a id="ba3" role="button" tabindex="0" onmousedown={changeBoard("Cooking")}>   Cooking    </a></li>
-            <li><a id="ba4" role="button" tabindex="0" onmousedown={changeBoard("Fitness")}>   Fitness    </a></li>
-            <li><a id="ba5" role="button" tabindex="0" onmousedown={changeBoard("Technology")}>Technology </a></li>
-            <li><a id="ba6" role="button" tabindex="0" onmousedown={changeBoard("Vidya")}>     Video Games</a></li>
+            <li><a id="ba1" role="button" tabindex="0" onmousedown={changeBoard("Main")} href="/">      Main       </a></li>
+            <li><a id="ba2" role="button" tabindex="0" onmousedown={changeBoard("Anime")} href="/">     Anime      </a></li>
+            <li><a id="ba3" role="button" tabindex="0" onmousedown={changeBoard("Cooking")} href="/">   Cooking    </a></li>
+            <li><a id="ba4" role="button" tabindex="0" onmousedown={changeBoard("Fitness")} href="/">   Fitness    </a></li>
+            <li><a id="ba5" role="button" tabindex="0" onmousedown={changeBoard("Technology")} href="/">Technology </a></li>
+            <li><a id="ba6" role="button" tabindex="0" onmousedown={changeBoard("Vidya")} href="/">     Video Games</a></li>
             {#if isAdmin}
-                <li><a id="ba7" role="button" tabindex="0" onmousedown={changeBoard("Admin")}>Admin</a></li>
+                <li><a id="ba7" role="button" tabindex="0" onmousedown={changeBoard("Admin")} href="/">Admin</a></li>
             {/if}
         </ul>
 
@@ -85,12 +81,14 @@
         <ul>
             <li><a id="bb1" href="/create">Create Thread</a></li>
 
-            {#if checkLogin()}
-                <li><a id="bb2" href="/account">Profile</a></li>
-            {:else}
-                <li><a id="bb3" href="/account">Login</a></li>
-                <li><a id="bb4" href="/signup">Sign Up</a></li>
-            {/if}
+            {#await checkLogin() then response}
+                {#if response}
+                    <li><a id="bb2" href="/account">Profile</a></li>
+                {:else}
+                    <li><a id="bb3" href="/account">Login</a></li>
+                    <li><a id="bb4" href="/signup">Sign Up</a></li>
+                {/if}
+            {/await}
         </ul>
     </nav>
 

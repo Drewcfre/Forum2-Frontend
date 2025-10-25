@@ -48,13 +48,13 @@ main {
     height: 40px;
 }
 
-.create-post-centered input[type="text"],
-.create-post-centered input[type="file"],
-.create-post-centered textarea,
-.create-post-centered select,
+.create-post-centered input[type="text"], .create-post-centered input[type="file"],
+.create-post-centered textarea, .create-post-centered select,
 .create-post-centered button {
-    padding: 0.5rem;
     font-size: 1rem;
+
+    padding: 0.5rem;
+
     background: var(--primary-color);
     color: inherit;
 
@@ -69,6 +69,10 @@ main {
 
 .create-post-centered input[type="text"] {
     width: 220.67px;
+}
+
+.report-correct input[type="text"] {
+    width: 210.67px;
 }
 
 .create-post-centered select {
@@ -87,19 +91,47 @@ main {
     resize: vertical;
 }
 
-/* Buttons match form style */
 .create-post-centered button {
     cursor: pointer;
+
     font-weight: bold;
-    border: 1px solid #000;
+
     background: var(--accent-color-one);
+
+    border: 1px solid #000;
 }
 
-/* Optional hover effect for accessibility */
-.create-post-centered button:hover {
+.create-post-centered button:hover, #bottom-thread-select button:hover {
     background: var(--accent-color-three);
 }
 
-.create-post-centered button:active {
+.create-post-centered button:active, #bottom-thread-select button:active {
     background: var(--accent-color-two);
+}
+
+article {
+    padding: 10px;
+    row-gap: 20px;
+}
+
+#thread-info {
+    padding: 10px;
+    gap: 10px;
+}
+
+#thread-info img {
+    height: 230px;
+}
+
+#bottom-thread-select, #thread-info {
+    display: flex;
+}
+
+#bottom-thread-select button {
+    width: 50%;
+
+    background: var(--accent-color-one);
+    color: inherit;
+
+    border: none;
 }
