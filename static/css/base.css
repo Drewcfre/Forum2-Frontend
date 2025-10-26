@@ -56,7 +56,6 @@
     display: none !important;
 }
 
-
 html, body {
     background: var(--primary-color);
     color:      var(--secondary-color);

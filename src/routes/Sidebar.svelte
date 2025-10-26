@@ -85,7 +85,7 @@
                 {#if response}
                     <li><a id="bb2" href="/account">Profile</a></li>
                 {:else}
-                    <li><a id="bb3" href="/account">Login</a></li>
+                    <li><a id="bb3" href="/login">Login</a></li>
                     <li><a id="bb4" href="/signup">Sign Up</a></li>
                 {/if}
             {/await}

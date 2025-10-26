@@ -1,5 +1,6 @@
 <script lang="ts">
     import {URL} from "$lib/index.js";
+    import {goto} from "$app/navigation";
 
     let loading = false;
 
@@ -8,20 +9,22 @@
         loading = true;
 
         try {
-            const response = await fetch(`${URL}/user/register`, {
+            const response = await fetch(`${URL}/user/login`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json',},
                 body: JSON.stringify({
                     username: event.currentTarget.username.value,
                     password: event.currentTarget.password.value,
-                    email: event.currentTarget.email.value,
                 }),
             });
 
             const responseBody = await response.json();
 
-            if (!response.ok) alert(`${response.status}: ${responseBody.error || "Unknown error!"}`)
-            else alert("A verification email has been sent to confirm your registration.");
+            if (!response.ok) alert(`${response.status}: ${responseBody.error || "Unknown error!"}`);
+            else {
+                alert("Successfully logged in!");
+                await goto("/account", {replaceState: true});
+            }
         }
         catch (err: any) { alert(err?.message || String(err)); }
         finally { loading = false; }
@@ -29,14 +32,13 @@
 </script>
 
 <main class="centered-form signup-correct">
-    <h1>Create an Account</h1>
+    <h1>Login</h1>
     <form id="post-create" class="triangle-pattern" on:submit={handleSubmit} aria-busy={loading}>
         <label>Username: <input name="username" type="text"></label>
         <label>Password: <input name="password" type="text"></label>
-        <label>Email:    <input id="email" name="email" type="text"></label>
 
         <button type="submit" disabled={loading}>
-            {#if loading}Creating...{:else}Create Account{/if}
+            {#if loading}Logging in...{:else}Login{/if}
         </button>
     </form>
 </main>

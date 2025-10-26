@@ -40,6 +40,9 @@ export const changeStyle = (style: string): MouseEventHandler<HTMLAnchorElement>
             document.getElementById('login-form'),
         ]
 
+        const threads = document.getElementsByTagName('article')
+        for (let i = 0; i < threads.length; i++) elements.push(threads.item(i))
+
         elements.forEach((element) => {
             element?.classList.remove('flat-backdrop', 'gradient-backdrop', 'triangle-pattern')
             element?.classList.add(((): string => {

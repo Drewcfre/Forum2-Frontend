@@ -31,7 +31,7 @@
     }
 </script>
 
-<main class="create-post-centered">
+<main class="centered-form">
     <h1>Create a New Thread</h1>
 
     <form id="post-create" class="triangle-pattern" enctype="multipart/form-data" on:submit={handleSubmit} aria-busy={loading}>

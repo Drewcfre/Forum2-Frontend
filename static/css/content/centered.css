@@ -1,0 +1,88 @@
+.centered-form {
+    display:         flex;
+    flex-direction:  column;
+    justify-content: center;
+    align-items:     center;
+}
+
+.centered-form form {
+    display:        flex;
+    flex-direction: column;
+    
+    gap: 1rem;
+    
+    width: 300px;
+
+    padding: 10px;
+
+    border: thin solid var(--light-primary);
+}
+
+.centered-form form div {
+    display:        flex;
+    flex-direction: column;
+    
+    gap: 10px;
+
+    width:  100%;
+    height: 40px;
+}
+
+.centered-form button,
+.centered-form input,
+.centered-form select,
+.centered-form textarea {
+    font-size: 1rem;
+
+    padding: 0.5rem;
+
+    background: var(--primary-color);
+    color: inherit;
+
+    border: thin solid var(--light-primary);
+
+    outline: none;
+}
+
+/* The label text can offset the input fields enough to push them to the next line,
+so I had to add custom widths to keep them inline. */
+.centered-form input[type="file"] { width: calc(100% - 17px); }
+.centered-form input[type="text"] { width: 220.67px; }
+
+.centered-form select {
+    background: var(--primary-color);
+    color:      var(--secondary-color);
+
+    width: 238px;
+}
+
+.centered-form #post-content { height: 140px; }
+
+.centered-form #post-content textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.centered-form button {
+    cursor: pointer;
+
+    font-weight: bold;
+
+    background: var(--accent-color-one);
+
+    border: 1px solid #000;
+}
+
+.centered-form button:hover, #bottom-thread-select button:hover {
+    background: var(--accent-color-three);
+}
+
+.centered-form button:active, #bottom-thread-select button:active {
+    background: var(--accent-color-two);
+}
+
+/* Since report forms have different labels, I had to modify the widths of certain input fields. */
+.report-correct input[type="text"] { width: 210.67px; }
+
+.signup-correct input[type="text"] { width: 194.61px; }
+.signup-correct #email { width: 220.67px; }

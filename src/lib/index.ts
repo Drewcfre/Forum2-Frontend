@@ -16,7 +16,7 @@ export let queriedThreads: any;
 export const startDate: Writable<Date> = writable();
 export const endDate: Writable<Date> = writable();
 
-export let threadUUID: string;
+export let threadUUID: Writable<string> = writable("");
 export let replyUUID: string;
 
 export async function getThreads(): Promise<void> {
@@ -71,8 +71,6 @@ export const isAdmin: boolean = false;
 
 export const username: string = "";
 
-
-
 export const captcha: Writable<any> = writable();
 
 export async function generateCaptcha(): Promise<string> {
@@ -95,6 +93,12 @@ export async function generateCaptcha(): Promise<string> {
 }
 
 export async function checkLogin(): Promise<boolean> {
-    return await fetch(`${URL}/user/check`, {method: 'GET'})
-        .then((response: any): any => response.json().body.loggedIn)
+    await fetch(`${URL}/user/check`, {method: 'GET'})
+        .then((response): ReadableStream => <ReadableStream>response.body)
+        .then(async (body): Promise<boolean> => {
+            const { done, value } = await body.getReader().read();
+            return value;
+        });
+
+    return false;
 }

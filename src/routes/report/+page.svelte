@@ -20,7 +20,7 @@
             });
 
             const responseBody = await response.json();
-            if (!response.ok) alert(`${response.status}: ${responseBody.error || "Unknown error!"}`)
+            if (!response.ok) alert(`${response.status}: ${responseBody.error || "Unknown error!"}`);
             else alert("Report submitted. Thank you for helping to make our forum safer!");
         }
         catch (err: any) { alert(err?.message || String(err)); }
@@ -28,7 +28,7 @@
     }
 </script>
 
-<main class="create-post-centered report-correct">
+<main class="centered-form report-correct">
     {#if !loggedIn}
         <h1>Only verified accounts can submit reports.</h1>
     {:else}
