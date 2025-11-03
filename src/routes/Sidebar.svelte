@@ -1,31 +1,37 @@
 <script lang="ts">
-    // TODO: Ensure all sort methods are functional.
+    import {changeBoard, endDate, loggedIn, isAdmin, restrictThreadDate, searchThreads, sortThreads, startDate} from "$lib/index.js";
+    import type {ChangeEventHandler, MouseEventHandler} from "svelte/elements";
 
-    import {
-        changeBoard, checkLogin, endDate, isAdmin,
-        restrictThreadDate, searchThreads, sortThreads, startDate
-    } from "$lib/index.js";
-    import type {ChangeEventHandler} from "svelte/elements";
+    function getQuery(): MouseEventHandler<HTMLButtonElement> {
+        return (): void => {
+            const query = <HTMLInputElement>document.getElementById("query");
+            searchThreads(query.value);
+        }
+    }
 
-    function getSelectValue() {
-        const select: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sort-select");
-        if(select) return select.value;
-
-        return "";
+    function sortBySelect(): ChangeEventHandler<HTMLSelectElement> {
+        return (): void => {
+            const sortBy = <HTMLSelectElement>document.getElementById("sort-select");
+            sortThreads(sortBy.value);
+        }
     }
 
     function updateDates(isStart: boolean): ChangeEventHandler<HTMLInputElement> {
         return (): void => {
             if (isStart) {
-                const date: HTMLInputElement = <HTMLInputElement>document.getElementById('startDate');
+                const date = <HTMLInputElement>document.getElementById('startDate');
                 startDate.set(<Date>date.valueAsDate);
             } else {
-                const date: HTMLInputElement = <HTMLInputElement>document.getElementById('endDate');
+                const date = <HTMLInputElement>document.getElementById('endDate');
                 endDate.set(<Date>date.valueAsDate);
             }
 
             restrictThreadDate();
         }
+    }
+
+    export function setLoggedIn(state: boolean): MouseEventHandler<HTMLAnchorElement> {
+        return async (): Promise<void> => loggedIn.set(state);
     }
 </script>
 
@@ -43,12 +49,12 @@
 
     <form id="sidebar-search" >
         <label><input id="query" type="text" placeholder="Search..." /></label>
-        <button onclick={searchThreads(document.getElementById("query")?.innerText)}>🔍</button>
+        <button type="button" onclick={getQuery()}>🔍</button>
     </form>
 
     <div id="sidebar-sort">
         <label for="sort-select">Sort by:</label>
-        <select id="sort-select" onchange={sortThreads(getSelectValue())}>
+        <select id="sort-select" onchange={sortBySelect()}>
             <option value="recent">Most Recent</option>
             <option value="popular">Most Popular</option>
             <option value="comments">Most Comments</option>
@@ -57,10 +63,10 @@
 
     <div id="sidebar-timespan">
         <label for="startDate"></label>
-        <input id="startDate" name="startDate" type="date" accept="mm/dd/yyyy" onchange={updateDates(true)}>
+        <input id="startDate" name="startDate" type="date" accept="mm/dd/yyyy" onclick={updateDates(true)}>
 
         <label for="endDate"></label>
-        <input id="endDate" name="endDate" type="date" accept="mm/dd/yyyy" onchange={updateDates(false)}>
+        <input id="endDate" name="endDate" type="date" accept="mm/dd/yyyy" onclick={updateDates(false)}>
     </div>
 
     <nav id="sidebar-navigation">
@@ -81,14 +87,13 @@
         <ul>
             <li><a id="bb1" href="/create">Create Thread</a></li>
 
-            {#await checkLogin() then response}
-                {#if response}
-                    <li><a id="bb2" href="/account">Profile</a></li>
-                {:else}
-                    <li><a id="bb3" href="/login">Login</a></li>
-                    <li><a id="bb4" href="/signup">Sign Up</a></li>
-                {/if}
-            {/await}
+            {#if $loggedIn}
+                <li><a id="bb2" href="/account">Profile</a></li>
+                <li><a id="bb3" role="button" tabindex="0" onmousedown={setLoggedIn(false)} href="/">Logout</a></li>
+            {:else}
+                <li><a id="bb4" href="/login">Login</a></li>
+                <li><a id="bb5" href="/signup">Sign Up</a></li>
+            {/if}
         </ul>
     </nav>
 

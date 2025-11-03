@@ -20,7 +20,8 @@ export default ts.config(
 		rules: {
 			"no-undef": 'off',
 			"@typescript-eslint/no-require-imports": 'off',
-			"no-explicit-any": false, // This shouldn't work. ESLint is retarded.
+			"no-explicit-any": 0,
+			"no-navigation-without-resolve": false,
 		}
 	},
 	{

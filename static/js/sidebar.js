@@ -27,10 +27,13 @@ document.getElementById('sidebar-toggle').addEventListener('click', () => {
     const profileAnchor = document.getElementById('bb2')
     if(profileAnchor) anchorTags.push([profileAnchor, "Prof", "Profile"])
 
-    const loginAnchor = document.getElementById('bb3')
+    const logoutAnchor = document.getElementById('bb3')
+    if(logoutAnchor) anchorTags.push([logoutAnchor, "Logout", "Logout"])
+    
+    const loginAnchor = document.getElementById('bb4')
     if(loginAnchor) anchorTags.push([loginAnchor, "Login", "Login"])
 
-    const signupAnchor = document.getElementById('bb4')
+    const signupAnchor = document.getElementById('bb5')
     if(signupAnchor) anchorTags.push([signupAnchor, "S Up", "Sign Up"])
 
     const adminBoard = document.getElementById('ba7')

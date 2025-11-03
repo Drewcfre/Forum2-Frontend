@@ -1,3 +1,5 @@
+// TODO: Maybe split this file into smaller ones to make it more readable.
+
 import {type Writable, writable} from "svelte/store";
 import type {ChangeEventHandler, MouseEventHandler} from "svelte/elements";
 
@@ -5,16 +7,19 @@ import type {ChangeEventHandler, MouseEventHandler} from "svelte/elements";
 export const URL = "http://127.0.0.1:5001/forum2-1134f/us-central1/app";
 export const selfURL = "http://localhost:4173";
 
+export let selfQuery: Writable<boolean> = writable(false);
 
 // region Board Details (Click to Expand)
 export let currentBoard: string = "Main";
 export let currentDesc: string = "A collection of popular posts from each board.";
 
-export let threads: any;
-export let queriedThreads: any;
+export let threads: any[];
+export let queriedThreads: Writable<any> = writable();
 
 export const startDate: Writable<Date> = writable();
 export const endDate: Writable<Date> = writable();
+
+export let currentThread: Writable<any> = writable();
 
 export let threadUUID: Writable<string> = writable("");
 export let replyUUID: string;
@@ -22,38 +27,50 @@ export let replyUUID: string;
 export async function getThreads(): Promise<void> {
     await fetch(`${URL}/anon/catalog/${currentBoard}`, {method: 'GET'})
         .then((response) => response.json())
-        .then((data) => threads = data.body)
+        .then(async (data) => threads = await data.body)
         .catch((error) => console.error("Error fetching threads:", error));
 
-    queriedThreads = threads
+    queriedThreads.set(threads);
 }
 
-export const searchThreads = (query: string | undefined): MouseEventHandler<HTMLButtonElement> => {
-    return (): void => {
-        if(!query) queriedThreads = threads;
-        else queriedThreads = threads.filter((item: any) => item.toString().includes(query));
-    };
+export function searchThreads(query: string): void {
+    query = query.trim().toLowerCase();
+    if(!query || query == "") queriedThreads.set(threads);
+    else {
+        queriedThreads.set(threads.filter(item =>
+            (item.title && item.title.toLowerCase().includes(query)) ||
+            (item.content && item.content.toLowerCase().includes(query))
+        ));
+    }
+
+    console.log("Query made for " + query);
+    console.log("Threads: " + JSON.stringify(queriedThreads));
+
+    selfQuery.set(true);
 }
 
 export function sortThreads(by: string): ChangeEventHandler<HTMLSelectElement> {
     return (): void => {
         switch (by) {
-            case 'Most Recent':
-                queriedThreads = queriedThreads.sort((a: any, b: any): any => (a.creationDate > b.creationDate) ? 1 : -1);
+            case 'recent':
+                queriedThreads.set(threads.sort((a: any, b: any): any => (a.creationDate > b.creationDate) ? 1 : -1));
                 break;
-            case 'Most Popular':
-                queriedThreads = queriedThreads.sort((a: any, b: any): any => (a.rating > b.rating) ? 1 : -1);
+            case 'popular':
+                queriedThreads.set(threads.sort((a: any, b: any): any => (a.rating > b.rating) ? 1 : -1));
                 break;
-            case 'Most Comments':
-                queriedThreads = queriedThreads.sort((a: any, b: any): any => (a.replies.size > b.replies.size) ? 1 : -1);
+            case 'comments':
+                queriedThreads.set(threads.sort((a: any, b: any): any => (a.replies.size > b.replies.size) ? 1 : -1));
                 break;
         }
+
+        selfQuery.set(true);
     }
 }
 
 export function restrictThreadDate(): ChangeEventHandler<HTMLInputElement> {
     return (): void => {
-        queriedThreads = threads.filter((item: any): any => (item.creationDate >= startDate && item.creationDate <= endDate));
+        queriedThreads.set(threads.filter(item => (item.creationDate >= startDate && item.creationDate <= endDate)));
+        selfQuery.set(true);
     }
 }
 
@@ -66,7 +83,7 @@ export function changeBoard(board: string): MouseEventHandler<HTMLAnchorElement>
 // endregion
 
 // region User Details (Click to Expand)
-export const loggedIn: boolean = false;
+export let loggedIn: Writable<boolean> = writable(false);
 export const isAdmin: boolean = false;
 
 export const username: string = "";
@@ -90,15 +107,4 @@ export async function generateCaptcha(): Promise<string> {
 
             return svgText;
         });
-}
-
-export async function checkLogin(): Promise<boolean> {
-    await fetch(`${URL}/user/check`, {method: 'GET'})
-        .then((response): ReadableStream => <ReadableStream>response.body)
-        .then(async (body): Promise<boolean> => {
-            const { done, value } = await body.getReader().read();
-            return value;
-        });
-
-    return false;
 }

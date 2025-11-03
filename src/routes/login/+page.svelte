@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {URL} from "$lib/index.js";
+    import {URL, loggedIn} from "$lib/index.js";
     import {goto} from "$app/navigation";
 
     let loading = false;
@@ -23,7 +23,8 @@
             if (!response.ok) alert(`${response.status}: ${responseBody.error || "Unknown error!"}`);
             else {
                 alert("Successfully logged in!");
-                await goto("/account", {replaceState: true});
+                loggedIn.set(true);
+                await goto("/", {replaceState: true});
             }
         }
         catch (err: any) { alert(err?.message || String(err)); }
