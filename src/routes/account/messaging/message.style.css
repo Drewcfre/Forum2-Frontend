@@ -1,0 +1,55 @@
+#dm {
+    display: flex;
+    justify-content: center;
+}
+
+#messageDiv {
+    min-width: 300px;
+    max-width: 300px;
+
+    min-height: 605px;
+    max-height: 550px;
+
+    overflow: hidden;
+
+    border: thin solid var(--light-primary);
+}
+
+#messages {
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: scroll;
+
+    width: 100%;
+
+    min-height: 400px;
+    max-height: 500px;
+
+    margin: 0;
+    padding: 0;
+}
+
+#send-message {
+    width: 100%;
+}
+
+p {
+    width: 50%;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.other-user {
+    margin-left: 0;
+
+    color: var(--secondary-color);
+    background: var(--accent-color-one);
+}
+
+.current-user {
+    margin-right: 0;
+
+    color: var(--secondary-color);
+    background: var(--accent-color-two);
+}

@@ -1,0 +1,183 @@
+button {
+    font: inherit;
+}
+
+#profile-page {
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+}
+
+#profile-container {
+    display: grid;
+    grid-template-columns: 440px 20px 1fr;
+    gap: 20px;
+
+    align-items: start;
+
+    min-width: 900px;
+    max-width: 100%;
+}
+
+#left-column, #right-column {
+    border: thin solid var(--light-primary);
+
+    min-width: 440px;
+    max-width: calc(50% - 20px);
+}
+
+#left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    min-height: 500px;
+    max-height: 500px;
+
+    overflow-y: scroll;
+}
+
+#profile-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding: 10px;
+
+    border: none;
+}
+
+#profile-picture {
+    display: flex;
+    flex: 0 0 110px;
+
+    overflow: hidden;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 110px;
+    height: 110px;
+
+    margin: 0;
+    padding: 0;
+
+    border: thin solid var(--light-primary);
+    border-radius: 50%; /* Circular frame */
+}
+
+#profile-picture img {
+    display: block;
+    object-fit: cover;
+
+    width: 100%;
+    height: 100%;
+}
+
+#profile-meta {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+#profile-meta h2 {
+    margin-bottom: 0;
+
+    font-weight: 600;
+}
+
+#profile-meta h3 {
+    margin-top: 4px;
+
+    font-weight: 400;
+    color: var(--secondary-color);
+}
+
+#description-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    padding: 0 18px 18px;
+}
+
+#contacts-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+
+    padding: 12px;
+
+    border: thin solid var(--light-primary);
+}
+
+#contacts-area a {
+    text-decoration: none;
+    color: var(--secondary-color);
+}
+
+#message {
+    border-bottom: thin dashed var(--light-secondary);
+}
+
+#message {
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 8px 12px;
+
+    background: var(--accent-color-one);
+}
+
+#message:hover {
+    cursor: pointer;
+    background: var(--accent-color-three);
+}
+
+#message:active {
+    background: var(--accent-color-two);
+}
+
+#right-column {
+    display: flex;
+    flex-direction: column;
+
+    min-height: 500px;
+    max-height: 500px;
+
+    overflow-y: scroll;
+
+    padding: 12px 0 0 0;
+}
+
+/* Custom widths to keep input fields inline with their labels. */
+#username, #password {
+    width: 159px;
+}
+
+#confirm-username, #confirm-password {
+    width: 124px;
+}
+
+#email, #title {
+    width: 185px;
+}
+
+#confirm-email {
+    width: 150px;
+}
+
+#description {
+    width: 133px;
+}

@@ -1,49 +1,5 @@
 <script lang="ts">
-    import {generateCaptcha, loggedIn, URL} from "$lib/index.js";
-
-    // TODO: Review image -> WebP -> Base64 conversion.
-
-    async function processImage(file: any) {
-        const bitmap = await createImageBitmap(file);
-
-        const { width, height } = bitmap;
-        const maxSize = 800;
-
-        let targetWidth = width;
-        let targetHeight = height;
-
-        if (width > maxSize || height > maxSize) {
-            const ratio = Math.min(maxSize / width, maxSize / height);
-            targetWidth = Math.round(width * ratio);
-            targetHeight = Math.round(height * ratio);
-        }
-
-        const canvas = document.createElement("canvas");
-        canvas.width = targetWidth;
-        canvas.height = targetHeight;
-
-        const ctx = canvas.getContext("2d");
-        if(ctx) ctx.drawImage(bitmap, 0, 0, targetWidth, targetHeight);
-
-        const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.8));
-
-        const base64: any = await blobToBase64(blob);
-        return {
-            filename: `${crypto.randomUUID().toString()}.webp`,
-            mimeType: "image/webp",
-            data: base64.split(",")[1],
-        };
-    }
-
-    function blobToBase64(blob: any) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-        });
-    }
-
+    import {generateCaptcha, loggedIn, URL, processImage} from "$lib/index.js";
 
     let loading = false;
 
@@ -59,8 +15,11 @@
             const file = post.image.files[0];
             if(file) imageData = await processImage(file);
 
+            let captchaValue = post.captcha ? post.captcha.value : "";
+
             const response = await fetch(`${URL}/anon/create/${post.board.value}`, {
                 method: "POST",
+                credentials: "include",
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     image: {
@@ -70,7 +29,8 @@
                     },
                     title: post.title.value,
                     content: post.content.value || "",
-                    captcha: post.captcha.value || "",
+                    captcha: captchaValue,
+                    live: false,
                 }),
             });
 

@@ -1,5 +1,47 @@
 // TODO: Maybe split this file into smaller ones to make it more readable.
 
+// TODO: Review image -> WebP -> Base64 conversion.
+export async function processImage(file: any) {
+    const bitmap = await createImageBitmap(file);
+
+    const { width, height } = bitmap;
+    const maxSize = 800;
+
+    let targetWidth = width;
+    let targetHeight = height;
+
+    if (width > maxSize || height > maxSize) {
+        const ratio = Math.min(maxSize / width, maxSize / height);
+        targetWidth = Math.round(width * ratio);
+        targetHeight = Math.round(height * ratio);
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+
+    const ctx = canvas.getContext("2d");
+    if(ctx) ctx.drawImage(bitmap, 0, 0, targetWidth, targetHeight);
+
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.8));
+
+    const base64: any = await blobToBase64(blob);
+    return {
+        filename: `${crypto.randomUUID().toString()}.webp`,
+        mimeType: "image/webp",
+        data: base64.split(",")[1],
+    };
+}
+
+function blobToBase64(blob: any) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+}
+
 import {type Writable, writable} from "svelte/store";
 import type {ChangeEventHandler, MouseEventHandler} from "svelte/elements";
 
@@ -86,25 +128,15 @@ export function changeBoard(board: string): MouseEventHandler<HTMLAnchorElement>
 export let loggedIn: Writable<boolean> = writable(false);
 export const isAdmin: boolean = false;
 
-export const username: string = "";
+export let username: string = "";
 
-export const captcha: Writable<any> = writable();
+export async function generateCaptcha(): Promise<any> {
+    let svg: any;
 
-export async function generateCaptcha(): Promise<string> {
-    return await fetch(`${URL}/tools/captcha`, {method: 'GET'})
-        .then((response): ReadableStream => <ReadableStream>response.body)
-        .then(async (body): Promise<string> => {
-            const reader = body.getReader();
-            const decoder = new TextDecoder('utf-8');
+    await fetch(`${URL}/tools/captcha`, {method: 'GET', credentials: "include"})
+        .then((response): Promise<string> => response.text())
+        .then(async (data): Promise<string> => svg = data);
 
-            let svgText: string = "";
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                svgText += decoder.decode(value, { stream: true });
-            }
-            svgText += decoder.decode();
-
-            return svgText;
-        });
+    return svg;
 }
+// endregion
