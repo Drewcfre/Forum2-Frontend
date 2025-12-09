@@ -1,6 +1,8 @@
 // TODO: Maybe split this file into smaller ones to make it more readable.
 
 // TODO: Review image -> WebP -> Base64 conversion.
+import {changeFont, changeStyle, changeTheme} from "$lib/ui.config.js";
+
 export async function processImage(file: any) {
     const bitmap = await createImageBitmap(file);
 
@@ -140,3 +142,28 @@ export async function generateCaptcha(): Promise<any> {
     return svg;
 }
 // endregion
+
+export async function getCustomization(): Promise<any> {
+    const data = await fetch(`${URL}/tools/customization`, {method: 'GET', credentials: "include"})
+        .then((response): Promise<any> => response.json());
+
+
+}
+
+export async function testGet() {
+    let data;
+
+    data = await fetch(`${URL}/user/test`,  {method: 'GET', credentials: "include"})
+        .then((response): Promise<any> => response.json());
+
+    return data;
+}
+
+export async function testPost() {
+    let data;
+
+    data = await fetch(`${URL}/user/test`,  {method: 'POST', credentials: "include"})
+        .then((response): Promise<any> => response.json());
+
+    return data;
+}

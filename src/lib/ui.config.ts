@@ -43,6 +43,9 @@ export const changeStyle = (style: string): MouseEventHandler<HTMLAnchorElement>
         const threads = document.getElementsByTagName('article')
         for (let i = 0; i < threads.length; i++) elements.push(threads.item(i))
 
+        const forms = document.getElementsByClassName('centered-form')
+        for (let i = 0; i < forms.length; i++) elements.push(forms.item(i) as HTMLElement)
+
         elements.forEach((element) => {
             element?.classList.remove('flat-backdrop', 'gradient-backdrop', 'triangle-pattern')
             element?.classList.add(((): string => {

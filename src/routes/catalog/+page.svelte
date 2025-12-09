@@ -1,8 +1,22 @@
 <script lang="ts">
-    import {threadUUID, getThreads, queriedThreads, currentThread} from "$lib/index.js";
+    import {threadUUID, getThreads, queriedThreads, currentThread, selfQuery} from "$lib/index.js";
     import {goto} from "$app/navigation";
-    import {selfQuery} from "$lib/index.js";
+    import {checkCookieNotice, setCookiesNotice, getCustomizations} from "./catalog.functions.js";
 </script>
+
+{#await checkCookieNotice()}
+    <p>Loading...</p>
+{:then cookieNotice}
+    {#if !cookieNotice}
+        {#if confirm("Enable third-party cookies for Forum2 to function.")}
+            {setCookiesNotice()}
+        {/if}
+    {/if}
+{/await}
+
+{#await getCustomizations()}
+    <p>Loading Customizations...</p>
+{/await}
 
 {#key $queriedThreads}
     <main id="main-content" class="">

@@ -12,27 +12,44 @@
 
             const post = event.currentTarget;
 
-            const file = post.image.files[0];
-            if(file) imageData = await processImage(file);
-
             let captchaValue = post.captcha ? post.captcha.value : "";
 
-            const response = await fetch(`${URL}/anon/create/${post.board.value}`, {
-                method: "POST",
-                credentials: "include",
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    image: {
-                        filename: imageData.filename,
-                        mimetype: imageData.mimeType,
-                        data: imageData.data,
-                    },
-                    title: post.title.value,
-                    content: post.content.value || "",
-                    captcha: captchaValue,
-                    live: false,
-                }),
-            });
+            let response;
+
+            const file = post.image.files[0];
+            if(file) {
+                imageData = await processImage(file);
+
+                response = await fetch(`${URL}/anon/create/${post.board.value}`, {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        image: {
+                            filename: imageData.filename,
+                            mimetype: imageData.mimeType,
+                            data: imageData.data,
+                        },
+                        title: post.title.value,
+                        content: post.content.value || "",
+                        captcha: captchaValue,
+                        live: false,
+                    }),
+                });
+            }
+            else {
+                response = await fetch(`${URL}/anon/create/${post.board.value}`, {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        title: post.title.value,
+                        content: post.content.value || "",
+                        captcha: captchaValue,
+                        live: false,
+                    }),
+                });
+            }
 
             const responseBody = await response.json();
             if (!response.ok) alert(`${response.status}: ${responseBody.error || "Unknown error!"}`);
