@@ -1,8 +1,6 @@
 // TODO: Maybe split this file into smaller ones to make it more readable.
 
 // TODO: Review image -> WebP -> Base64 conversion.
-import {changeFont, changeStyle, changeTheme} from "$lib/ui.config.js";
-
 export async function processImage(file: any) {
     const bitmap = await createImageBitmap(file);
 
@@ -45,85 +43,14 @@ function blobToBase64(blob: any) {
 }
 
 import {type Writable, writable} from "svelte/store";
-import type {ChangeEventHandler, MouseEventHandler} from "svelte/elements";
 
 // TODO: Change this to the deployed backend URL.
 export const URL = "http://127.0.0.1:5001/forum2-1134f/us-central1/app";
 export const selfURL = "http://localhost:4173";
 
-export let selfQuery: Writable<boolean> = writable(false);
 
-// region Board Details (Click to Expand)
-export let currentBoard: string = "Main";
-export let currentDesc: string = "A collection of popular posts from each board.";
 
-export let threads: any[];
-export let queriedThreads: Writable<any> = writable();
 
-export const startDate: Writable<Date> = writable();
-export const endDate: Writable<Date> = writable();
-
-export let currentThread: Writable<any> = writable();
-
-export let threadUUID: Writable<string> = writable("");
-export let replyUUID: string;
-
-export async function getThreads(): Promise<void> {
-    await fetch(`${URL}/anon/catalog/${currentBoard}`, {method: 'GET'})
-        .then((response) => response.json())
-        .then(async (data) => threads = await data.body)
-        .catch((error) => console.error("Error fetching threads:", error));
-
-    queriedThreads.set(threads);
-}
-
-export function searchThreads(query: string): void {
-    query = query.trim().toLowerCase();
-    if(!query || query == "") queriedThreads.set(threads);
-    else {
-        queriedThreads.set(threads.filter(item =>
-            (item.title && item.title.toLowerCase().includes(query)) ||
-            (item.content && item.content.toLowerCase().includes(query))
-        ));
-    }
-
-    console.log("Query made for " + query);
-    console.log("Threads: " + JSON.stringify(queriedThreads));
-
-    selfQuery.set(true);
-}
-
-export function sortThreads(by: string): ChangeEventHandler<HTMLSelectElement> {
-    return (): void => {
-        switch (by) {
-            case 'recent':
-                queriedThreads.set(threads.sort((a: any, b: any): any => (a.creationDate > b.creationDate) ? 1 : -1));
-                break;
-            case 'popular':
-                queriedThreads.set(threads.sort((a: any, b: any): any => (a.rating > b.rating) ? 1 : -1));
-                break;
-            case 'comments':
-                queriedThreads.set(threads.sort((a: any, b: any): any => (a.replies.size > b.replies.size) ? 1 : -1));
-                break;
-        }
-
-        selfQuery.set(true);
-    }
-}
-
-export function restrictThreadDate(): ChangeEventHandler<HTMLInputElement> {
-    return (): void => {
-        queriedThreads.set(threads.filter(item => (item.creationDate >= startDate && item.creationDate <= endDate)));
-        selfQuery.set(true);
-    }
-}
-
-export function changeBoard(board: string): MouseEventHandler<HTMLAnchorElement> {
-    return async (): Promise<void> => {
-        currentBoard = board;
-        await getThreads();
-    }
-}
 // endregion
 
 // region User Details (Click to Expand)
@@ -143,27 +70,20 @@ export async function generateCaptcha(): Promise<any> {
 }
 // endregion
 
-export async function getCustomization(): Promise<any> {
-    const data = await fetch(`${URL}/tools/customization`, {method: 'GET', credentials: "include"})
-        .then((response): Promise<any> => response.json());
-
-
-}
-
-export async function testGet() {
-    let data;
-
-    data = await fetch(`${URL}/user/test`,  {method: 'GET', credentials: "include"})
-        .then((response): Promise<any> => response.json());
-
-    return data;
-}
-
-export async function testPost() {
-    let data;
-
-    data = await fetch(`${URL}/user/test`,  {method: 'POST', credentials: "include"})
-        .then((response): Promise<any> => response.json());
-
-    return data;
-}
+// export async function testGet() {
+//     let data;
+//
+//     data = await fetch(`${URL}/user/test`,  {method: 'GET', credentials: "include"})
+//         .then((response): Promise<any> => response.json());
+//
+//     return data;
+// }
+//
+// export async function testPost() {
+//     let data;
+//
+//     data = await fetch(`${URL}/user/test`,  {method: 'POST', credentials: "include"})
+//         .then((response): Promise<any> => response.json());
+//
+//     return data;
+// }

@@ -1,5 +1,6 @@
 <script lang="ts">
-    import {loggedIn, replyUUID, selfURL, threadUUID, URL} from "$lib/index.js";
+    import {loggedIn, selfURL, URL} from "$lib/index.js";
+    import {replyUUID, threadUUID} from "$lib/thread.queries.js"
 
     let loading = false;
 

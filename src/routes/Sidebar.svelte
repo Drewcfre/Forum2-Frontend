@@ -1,5 +1,6 @@
 <script lang="ts">
-    import {changeBoard, endDate, loggedIn, isAdmin, restrictThreadDate, searchThreads, sortThreads, startDate} from "$lib/index.js";
+    import {loggedIn, isAdmin} from "$lib/index.js";
+    import {changeBoard, endDate, restrictThreadDate, searchThreads, sortThreads, startDate} from "$lib/thread.queries.js";
     import type {ChangeEventHandler, MouseEventHandler} from "svelte/elements";
 
     function getQuery(): MouseEventHandler<HTMLButtonElement> {

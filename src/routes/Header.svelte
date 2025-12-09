@@ -1,13 +1,14 @@
 <script lang="ts">
-    import {currentBoard, currentDesc} from "$lib/index.js";
-
+    import {currentBoard, currentDesc} from "$lib/thread.queries.js";
     import {changeFont, changeStyle, changeTheme} from "$lib/ui.config.js";
 </script>
 
 <header id="site-header" class="triangle-pattern">
     <div id="header-info">
-        <h2>{currentBoard}</h2>
-        <h4>{currentDesc}</h4>
+        {#key $currentBoard}
+            <h2>{$currentBoard}</h2>
+            <h4>{$currentDesc}</h4>
+        {/key}
     </div>
 
     <div id="header-dropdowns">

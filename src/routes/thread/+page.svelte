@@ -1,5 +1,6 @@
 <script lang="ts">
-    import {threadUUID, currentThread, loggedIn} from "$lib/index.js";
+    import {loggedIn} from "$lib/index.js";
+    import {threadUUID, currentThread} from "$lib/thread.queries.js";
     import {goto} from "$app/navigation";
 
     import {generateCaptcha, URL, processImage} from "$lib/index.js";
