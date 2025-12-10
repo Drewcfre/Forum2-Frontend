@@ -51,15 +51,13 @@ export let threadUUID: Writable<string> = writable("");
 export let replyUUID: string;
 
 export async function getThreads(): Promise<void> {
-    // if (!selfQuery) {
-        await fetch(`${URL}/anon/catalog/${get(currentBoard)}`, {method: 'GET'})
-            .then((response) => response.json())
-            .then(async (data) => threads = Object.values(data.body.board))
-            .catch((error) => console.error("Error fetching threads:", error));
+    await fetch(`${URL}/anon/catalog/${get(currentBoard)}`, {method: 'GET'})
+        .then((response) => response.json())
+        .then(async (data) => threads = Object.values(data.body.board))
+        .catch((error) => console.error("Error fetching threads:", error));
 
-        queriedThreads.set(threads);
-    // }
-    // else selfQuery = false;
+    for (let thread of threads) if (thread.replies) thread.replies = Object.values(thread.replies);
+    queriedThreads.set(threads);
 }
 
 export function searchThreads(query: string): void {

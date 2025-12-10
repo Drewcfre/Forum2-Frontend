@@ -1,9 +1,11 @@
 <script lang="ts">
     import {loggedIn} from "$lib/index.js";
-    import {threadUUID, currentThread} from "$lib/thread.queries.js";
+    import {threadUUID, currentThread, currentBoard} from "$lib/thread.queries.js";
     import {goto} from "$app/navigation";
 
     import {generateCaptcha, URL, processImage} from "$lib/index.js";
+    import {get} from "svelte/store";
+    import {accessOtherProfile} from "../account/account.functions.js";
 
     let loading = false;
 
@@ -19,7 +21,7 @@
             const file = post.image.files[0];
             if(file) imageData = await processImage(file);
 
-            const response = await fetch(`${URL}/anon/reply/{threadUUID}`, {
+            const response = await fetch(`${URL}/anon/reply/${get(currentBoard)}/${get(threadUUID)}`, {
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
@@ -28,8 +30,8 @@
                         mimetype: imageData.mimeType,
                         data: imageData.data,
                     },
-                    content: post.content.value || "",
-                    captcha: post.captcha.value || "",
+                    content: (post.content) ? post.content.value : "",
+                    captcha: (post.captcha) ? post.captcha.value : "",
                 }),
             });
 
@@ -47,6 +49,10 @@
         let element = document.getElementById('captcha-container');
         if(element != null) element.innerHTML = svg;
     }
+
+    async function rateThread() {
+
+    }
 </script>
 
 <main>
@@ -63,13 +69,14 @@
 
             <div id="bottom-thread-select">
                 {#if loggedIn}
-                    <form>
+                    <form on:submit={rateThread}>
                         <input type="range" min="1" max="5" value="3">
                         <button>Rate</button>
                     </form>
                 {/if}
 
                 <button on:click={() => { threadUUID.set($currentThread.UUID); goto("/report", { replaceState: true }); }}>Report Post</button>
+                <button on:click={() => { accessOtherProfile($currentThread.username); goto("/account", { replaceState: true }); }}>Visit Account</button>
             </div>
         </div>
     </article>

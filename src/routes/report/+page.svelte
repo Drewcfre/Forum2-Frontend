@@ -11,7 +11,7 @@
         let link = `${selfURL}/thread/${threadUUID}`;
 
         try {
-            const response = await fetch(`${URL}/create/Admin`, {
+            const response = await fetch(`${URL}/anon/create/Admin`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {loggedIn, isAdmin} from "$lib/index.js";
+    import {loggedIn, isAdmin, isLoggedIn} from "$lib/index.js";
     import {changeBoard, endDate, restrictThreadDate, searchThreads, sortThreads, startDate} from "$lib/thread.queries.js";
     import type {ChangeEventHandler, MouseEventHandler} from "svelte/elements";
 
@@ -32,7 +32,10 @@
     }
 
     export function setLoggedIn(state: boolean): MouseEventHandler<HTMLAnchorElement> {
-        return async (): Promise<void> => loggedIn.set(state);
+        return async (): Promise<void> => {
+            await fetch(`${URL}/user/logout`, {method: 'GET', credentials: "include"});
+            loggedIn.set(state);
+        }
     }
 </script>
 
@@ -88,13 +91,17 @@
         <ul>
             <li><a id="bb1" href="/create">Create Thread</a></li>
 
-            {#if $loggedIn}
-                <li><a id="bb2" href="/account">Profile</a></li>
-                <li><a id="bb3" role="button" tabindex="0" onmousedown={setLoggedIn(false)} href="/">Logout</a></li>
-            {:else}
-                <li><a id="bb4" href="/login">Login</a></li>
-                <li><a id="bb5" href="/signup">Sign Up</a></li>
-            {/if}
+            {#await isLoggedIn()}
+                <li><p>Checking credentials...</p></li>
+            {:then _}
+                {#if loggedIn}
+                    <li><a id="bb2" href="/account">Profile</a></li>
+                    <li><a id="bb3" role="button" tabindex="0" onmousedown={setLoggedIn(false)} href="/">Logout</a></li>
+                {:else}
+                    <li><a id="bb4" href="/login">Login</a></li>
+                    <li><a id="bb5" href="/signup">Sign Up</a></li>
+                {/if}
+            {/await}
         </ul>
     </nav>
 

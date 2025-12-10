@@ -59,6 +59,14 @@ export const isAdmin: boolean = false;
 
 export let username: string = "";
 
+export async function isLoggedIn(): Promise<boolean> {
+    await fetch(`${URL}/user/check`, {method: 'GET', credentials: "include"})
+        .then((response) => response.json())
+        .then((data) => loggedIn.set(data.loggedIn));
+
+    return Boolean(loggedIn);
+}
+
 export async function generateCaptcha(): Promise<any> {
     let svg: any;
 

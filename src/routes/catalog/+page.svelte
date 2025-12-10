@@ -22,24 +22,26 @@
     {#await getThreads()}
         <p>Loading Threads...</p>
     {:then _}
-        {#each $queriedThreads as thread}
-            <article>
-                <div class="triangle-pattern">
-                    <div id="thread-info">
-                        <img src="{thread.url}" alt="">
+        {#key $queriedThreads}
+            {#each $queriedThreads as thread}
+                <article>
+                    <div class="triangle-pattern">
+                        <div id="thread-info">
+                            <img src="{thread.url}" alt="">
 
-                        <div>
-                            <h2>{thread.title}</h2>
-                            <p>{thread.content}</p>
+                            <div>
+                                <h2>{thread.title}</h2>
+                                <p>{thread.content}</p>
+                            </div>
+                        </div>
+
+                        <div id="bottom-thread-select">
+                            <button on:click={() => { threadUUID.set(thread.UUID); currentThread.set(thread); goto("/thread", { replaceState: true }); }}>View Thread</button>
+                            <button on:click={() => { threadUUID.set(thread.UUID); goto("/report", { replaceState: true }); }}>Report Post</button>
                         </div>
                     </div>
-
-                    <div id="bottom-thread-select">
-                        <button on:click={() => { threadUUID.set(thread.UUID); currentThread.set(thread); goto("/thread", { replaceState: true }); }}>View Thread</button>
-                        <button on:click={() => { threadUUID.set(thread.UUID); goto("/report", { replaceState: true }); }}>Report Post</button>
-                    </div>
-                </div>
-            </article>
-        {/each}
+                </article>
+            {/each}
+        {/key}
     {/await}
 </main>

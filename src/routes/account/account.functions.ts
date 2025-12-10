@@ -9,6 +9,11 @@ export async function accessProfile(): Promise<any> {
     else if(response.status === 404) return data.error;
 }
 
+export async function accessOtherProfile(otherUser: string): Promise<any> {
+    const response = await fetch(`${URL}/anon/profile/${otherUser}`, {method: 'GET', credentials: "include"});
+    const data = await response.json();
+}
+
 export let profileMessages: Writable<any> = writable([]);
 export let selectedMessage: Writable<any> = writable(null);
 
@@ -72,6 +77,8 @@ export async function editAccount(event: any): Promise<void> {
             let imageData: any;
             if(file) imageData = await processImage(file);
 
+            console.log(imageData);
+
             body = JSON.stringify({
                 image: {
                     filename: imageData.filename,
@@ -79,6 +86,8 @@ export async function editAccount(event: any): Promise<void> {
                     data: imageData.data,
                 },
             });
+
+            console.log(body);
 
             noCheck = true;
             break;
