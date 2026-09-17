@@ -1,6 +1,6 @@
 # Forum2 Frontend
 
-The Forum2 Frontend, or Alice, is a sleek, user-friendly interface designed for the Forum2 social media platform.
+The Forum2 Frontend is a sleek, user-friendly interface designed for the Forum2 social media platform.
 Built with SvelteKit, it offers a seamless experience for users to interact with the Forum2 backend.
 
 ## Technologies
